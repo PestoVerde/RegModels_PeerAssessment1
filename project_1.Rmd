@@ -1,0 +1,28 @@
+---
+title: Exploring Data Set of a Collection of Cars for Dependence of Fuel Economy on
+  Type of Transmission
+author: "Sergey Cherkasov"
+date: "17 Aug 2015"
+output: html_document
+---
+
+#Synopsis
+
+
+
+#Simulation 
+
+
+###Is an automatic or manual transmission better for MPG? 
+
+
+
+###Quantify the MPG difference between automatic and manual transmissions 
+
+
+
+#Conclusion 
+
+
+#Appendix
+
