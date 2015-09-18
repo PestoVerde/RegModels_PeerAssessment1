@@ -11,7 +11,7 @@ In this paper we are going to explore the relationship between a set of variable
 The client is particularly interested in the following two questions:
 
 * Is an automatic or manual transmission better for MPG  
-* Quantify the MPG difference between automatic and manual transmissions
+* Quantify the MPG difference between automatic and manual transmissions 
 
 Original Rmd file could be found at the folloing GitHub [repository](https://github.com/PestoVerde/RegModels_PeerAssessment1) - https://github.com/PestoVerde/RegModels_PeerAssessment1.
 
