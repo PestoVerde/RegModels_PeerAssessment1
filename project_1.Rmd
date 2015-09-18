@@ -1,28 +1,49 @@
 ---
-title: Exploring Data Set of a Collection of Cars for Dependence of Fuel Economy on
-  Type of Transmission
+title: "Exploring the Dependence of Fuel Economy on Type of Transmission"
 author: "Sergey Cherkasov"
-date: "17 Aug 2015"
-output: html_document
+date: "18 Sep 2015"
+output: pdf_document
 ---
 
 #Synopsis
+In this paper we are going to explore the relationship between a set of variables and miles per gallon (MPG) (outcome). We use mtcars dataset, provided by The Comprehensive R Archive Network and can code book can be found [here](http://stat.ethz.ch/R-manual/R-devel/library/datasets/html/mtcars.html) - http://stat.ethz.ch/R-manual/R-devel/library/datasets/html/mtcars.html.
+
+The client is particularly interested in the following two questions:
+
+* Is an automatic or manual transmission better for MPG  
+* Quantify the MPG difference between automatic and manual transmissions
+
+Original Rmd file could be found at the folloing GitHub [repository](https://github.com/PestoVerde/RegModels_PeerAssessment1) - https://github.com/PestoVerde/RegModels_PeerAssessment1.
+
+#Exploratory analysis 
+
+First let us investigate the data. It discribes `r dim(mtcars)[1]` cars with `r dim(mtcars)[2]` variables. These are `r names(mtcars)`. The parameters we are interesting for are mpg and am. Mean for automatic transmission is `r mean(mtcars$mpg[mtcars$am==0])` mpg whereas mean for manual transmission equals `r mean(mtcars$mpg[mtcars$am==1])`. Ranges are `r range(mtcars$mpg[mtcars$am==0])` and `r range(mtcars$mpg[mtcars$am==1])`, they do not even intersect.(see also boxplot in Appendix 1).
+
+The dependence looks significant, and test comfirm that, with p-value:
+```{r echo=FALSE}
+auto <- mtcars$mpg[mtcars$am==0]
+manual <- mtcars$mpg[mtcars$am==1]
+test <- t.test(auto, manual)
+test$p.value
+```
+
+
+##Is an automatic or manual transmission better for MPG? 
 
 
 
-#Simulation 
-
-
-###Is an automatic or manual transmission better for MPG? 
-
-
-
-###Quantify the MPG difference between automatic and manual transmissions 
+##Quantify the MPG difference between automatic and manual transmissions 
 
 
 
 #Conclusion 
 
 
-#Appendix
+#Appendices
 
+##Appendix 1
+```{r echo=FALSE}
+boxplot(mpg ~ as.factor(am), data=mtcars,
+        main = "Dependance MPG on Type of Transmission",
+        xlab = "Transmission", ylab = "MPG")
+```
