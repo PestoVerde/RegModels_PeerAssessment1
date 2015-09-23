@@ -19,9 +19,9 @@ Original Rmd file could be found at the folloing GitHub [repository](https://git
 
 First let us investigate the data. It describes `r dim(mtcars)[1]` cars with `r dim(mtcars)[2]` variables. These are `r names(mtcars)`. The parameters we are interesting for are mpg and am. 
 
-##Is an automatic or manual transmission better for MPG? 
+#Is an automatic or manual transmission better for MPG? 
 
-Mean for automatic transmission is `r mean(mtcars$mpg[mtcars$am==0])` mpg whereas mean for manual transmission equals `r mean(mtcars$mpg[mtcars$am==1])`. Ranges are `r range(mtcars$mpg[mtcars$am==0])` and `r range(mtcars$mpg[mtcars$am==1])`, they do not even intersect.(see also boxplot in Appendix 1).
+Mean for automatic transmission is `r round(mean(mtcars$mpg[mtcars$am==0]),1)` mpg whereas mean for manual transmission equals `r round(mean(mtcars$mpg[mtcars$am==1]),1)`. Ranges are `r range(mtcars$mpg[mtcars$am==0])` and `r range(mtcars$mpg[mtcars$am==1])`, they do not even intersect.(see also boxplot in Appendix 1).
 
 The dependence looks significant, and Student's t-test comfirms that, with p-value:
 ```{r echo=FALSE}
@@ -31,16 +31,16 @@ test <- t.test(auto, manual)
 test$p.value
 ```
 
-##Quantify the MPG difference between automatic and manual transmissions 
+#Quantify the MPG difference between automatic and manual transmissions 
 
-Since the cilents is interested in dependance of MPG on type of transmission, we build the simple linear model mpg ~ am, having am varioation as a factor. The model quantify the MPG difference as:
+Since the cilents is interested in dependance of MPG on type of transmission, we build the simple linear model mpg ~ am, having am variation as a factor. The model quantify the MPG difference as:
 
 ```{r echo=FALSE}
 fit.1 <- lm(mpg ~ as.factor(am), data = mtcars)
 fit.1$coef[2]
 ```
 
-That is the cars with auto transmission have average `r round(fit.1$coef[2],1)` worse than cars with manual one. However the quality of the model is not really good because R-squared `r summary(fit.1)$r.squared`, that is explain only `r round(summary(fit.1)$r.squared*100)`% of variance.
+That is the cars with auto transmission have average `r round(fit.1$coef[2],1)` mpg worse than cars with manual one. However the quality of the model is not really good because R-squared `r summary(fit.1)$r.squared`, that is explain only `r round(summary(fit.1)$r.squared*100)`% of variance (see details in Appendix 2).
 
 From the common sence we can suppose that apart from type of transmissions there are other variables which can have an influence on fuel economy. The weight of a car (wt) and displacement of a engine (disp) look promising. Let us have quick look on the model like mpg ~ am + wt + disp. New model quantify the MPG difference as:
 
@@ -49,18 +49,45 @@ fit.2 <- lm(mpg ~ as.factor(am) + wt + disp, data = mtcars)
 fit.2$coef[2]
 ```
 
-Now the cars with auto transmission have average `r round(fit.2$coef[2],1)` worse than cars with manual one. The new model have R-squared `r summary(fit.2)$r.squared`, now it explains `r round(summary(fit.2)$r.squared*100)`% of variance which is much better.
+Now the cars with auto transmission have average `r round(fit.2$coef[2],1)` worse than cars with manual one. The new model have R-squared `r summary(fit.2)$r.squared`, now it explains `r round(summary(fit.2)$r.squared*100)`% of variance which is much better prediction (details are in Appendix 3).
 
+Now let us compare our first simple linear model and the multivariative model. There are signicantly different with the p-value
 
+```{r echo=FALSE}
+anova(fit.1, fit.2)$Pr[2]
+```
+
+(see details in Appendix 4). Checking the model's residuals can be found in Appendix 5. It shows they are normally distributed and have a homoskedasticity.
 
 #Conclusion 
-
+We can insist that cars with manual transmission have better fuel economy. But simply dependance does not perform really good. As multivariative model shows, the fuel economy depends mostly on weight. That is we can not give a simple answer regarding two types of transmission and fuel economy. There is a necessity of more complex analysis and more complicated models.
 
 #Appendices
 
-##Appendix 1
+##Appendix 1. Exploratory analysis of data. Different in mpg depending on type of transmission.
 ```{r echo=FALSE}
 boxplot(mpg ~ as.factor(am), data=mtcars,
         main = "Dependance MPG on Type of Transmission",
         xlab = "Transmission", ylab = "MPG")
+```
+
+##Appendix 2. Summary of simple linear model.
+``` {r echo=FALSE}
+summary(fit.1)
+```
+
+##Appendix 3. Summary of multivariative model.
+``` {r echo=FALSE}
+summary(fit.2)
+```
+
+##Appendix 4. Comparing two models.
+``` {r echo=FALSE}
+anova(fit.1, fit.2)
+```
+
+##Appendix 5. Residuals and diagnostic of multivariative model.
+``` {r echo=FALSE}
+par(mfrow = c(2,2))
+plot(fit.2)
 ```
